@@ -21,6 +21,7 @@ const word = "magnolia";
 //variable for saving guessed letters
 const guessedLetters = [];
 
+
 // Write a Function to Add Placeholders "•" for Each Letter
 const placeHolder = function(word){
     const arrayOfWord = [];
@@ -36,28 +37,32 @@ placeHolder(word);
 //Add an Event Listener for the Button
 guessButton.addEventListener("click", function(e){
     e.preventDefault();
-    const guess = inputLetter.value;
-    //console.log(guess);
-    inputLetter.value = ""; //clearing the input field
-    
+
     //empty message element
     message.innerHTML = "";
-    
+    //grab input value
+    const guess = inputLetter.value;
+   
+    //make sure that it is a single letter
     const validatedGuess = validateInput(guess);
     //console.log(validatedGuess);
-
-    makeGuess(validatedGuess);
-
-
-
+    
+    //makeGuess runs only when validateGuess returns single letter
+    //if user other than single letter, this if statetment will be false 
+    if (validatedGuess){
+        //console.log(validatedGuess)
+        makeGuess(validatedGuess);
+    }
+    
+    inputLetter.value = ""; //clearing the input field
 })
 
 //validate the input information
 const validateInput = function (input){
     const acceptedLetter = /[a-zA-Z]/;
-    if (input === ""){
+    if (input.length === 0 ){
         message.innerText ="Please input a letter.";
-    } else if (input.length >=2) {
+    } else if (input.length > 1) {
         message.innerText = "Please enter just one letter.";
     } else if(!input.match(acceptedLetter)){
         message.innerText = "Please enter letters from a-z";
@@ -66,12 +71,56 @@ const validateInput = function (input){
     }
 }
 
-const makeGuess = function(letter){
-       const upperCaseLetter = letter.toUpperCase();
-    if (guessedLetters.includes(upperCaseLetter)){
-        message.innerText = "You already guessed that letter, silly. Try Again.";
+// function to check if same letter is entered twice
+const makeGuess = function (guess) {
+    guess = guess.toUpperCase();
+    if (guessedLetters.includes(guess)) {
+      message.innerText = "You already guessed that letter, silly. Try again.";
     } else {
-        guessedLetters.push(upperCaseLetter);
-    };
-    console.log(guessedLetters);
+      guessedLetters.push(guess);
+      console.log(guessedLetters);
+      updateGuessedLetters(guessedLetters);
+      updateWordInProgress(guessedLetters);
+    }
+  };
+
+//create a function to show the guessed letters
+const updateGuessedLetters = function(array){
+    guessedLettersElement.innerHTML = "";
+    for(let letter of array){
+        const li = document.createElement("li")
+        li.innerText = letter;
+       guessedLettersElement.append(li);
+    }
+};
+
+//create a function to update the word in progress
+const updateWordInProgress = function(guessedLetters){
+    const wordUpper = word.toUpperCase();
+    console.log(wordUpper);
+    //create variable to split the word string into an array
+    const wordArray = wordUpper.split("");
+    console.log(wordArray);
+    
+    //variable for saving word in progress letters
+    const wordInProgressLetters = [];
+
+    //check if wordArray contains letters from the guessedLetters
+    for(let letter of wordArray) {
+        if (guessedLetters.includes(letter)){
+            wordInProgressLetters.push(letter);
+        } else {
+            wordInProgressLetters.push("•");
+        }
+    }
+    wordInProgress.innerText = wordInProgressLetters.join("");
+    checkWin(wordInProgressLetters);
 }
+
+//create a function to check if the player won
+const checkWin = function(array){
+    if (array.join("") === word.toUpperCase()){
+        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        message.classList.add("win");
+    }
+};
