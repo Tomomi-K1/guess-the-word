@@ -30,7 +30,7 @@ const placeHolder = function(word){
         arrayOfWord.push("•");
     } 
     wordInProgress.innerText = arrayOfWord.join(""); 
-}
+};
 
 placeHolder(word);
 
@@ -39,7 +39,7 @@ guessButton.addEventListener("click", function(e){
     e.preventDefault();
 
     //empty message element
-    message.innerHTML = "";
+    message.innerText = "";
     //grab input value
     const guess = inputLetter.value;
    
@@ -47,13 +47,13 @@ guessButton.addEventListener("click", function(e){
     const validatedGuess = validateInput(guess);
     //console.log(validatedGuess);
     
-    //makeGuess runs only when validateGuess returns single letter
-    //if user other than single letter, this if statetment will be false 
+    /*makeGuess runs only when validateGuess returns single letter
+    if other than single letter is entered, if statetment will be false
+    so makeGuess function will not run*/ 
     if (validatedGuess){
         //console.log(validatedGuess)
         makeGuess(validatedGuess);
     }
-    
     inputLetter.value = ""; //clearing the input field
 })
 
