@@ -166,7 +166,7 @@ const countGuessesRemaining = function(guess){
 //create a function to check if the player won
 const checkWin = function(array){
     if (array.join("") === word.toUpperCase()){
-        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        message.innerHTML = '<p class="highlight">You guessed the correct word! Congrats!</p>';
         message.classList.add("win");
         startOver();
     }
