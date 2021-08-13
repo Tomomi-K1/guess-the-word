@@ -162,7 +162,6 @@ const countGuessesRemaining = function(guess){
     };
 }
 
-
 //create a function to check if the player won
 const checkWin = function(array){
     if (array.join("") === word.toUpperCase()){
