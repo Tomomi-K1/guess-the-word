@@ -22,7 +22,7 @@ let word = "magnolia";
 const guessedLetters = [];
 
 //create global variable for number of guesses player can make
-let remainingGuesses = word.length;
+let remainingGuesses = 8;
 
 //getting a random word from text file
 const getWord = async function(){
@@ -41,8 +41,15 @@ const getWord = async function(){
     console.log(randomWord);
     word = randomWord;
     placeHolder(word);
+    remainingGuesses = word.length;
+    console.log(remainingGuesses);
+    remainigGuessSpan.innerText = `${remainingGuesses} guess`;
+    
 
 }   
+
+//fire off the game
+getWord();
 
 // Write a Function to Add Placeholders "•" for Each Letter
 const placeHolder = function(word){
@@ -54,7 +61,7 @@ const placeHolder = function(word){
     wordInProgress.innerText = arrayOfWord.join(""); 
 };
 
-getWord();
+
 
 //Add an Event Listener for the Button
 guessButton.addEventListener("click", function(e){
@@ -101,8 +108,8 @@ const makeGuess = function (guess) {
     } else {
       guessedLetters.push(guess);
       console.log(guessedLetters);
-      updateGuessedLetters(guessedLetters);
-      countGuesses(guess);
+      countGuessesRemaining(guess);
+      updateGuessedLetters(guessedLetters);   
       updateWordInProgress(guessedLetters);
     }
   };
@@ -141,23 +148,24 @@ const updateWordInProgress = function(guessedLetters){
 }
 
 //create a function to count Guesses remaining
-const countGuesses = function(guess){
+const countGuessesRemaining = function(guess){
      const wordUpper = word.toUpperCase();
-     //for(let letter of guessedLetters){
+
          if (!wordUpper.includes(guess)){
-             message.innerText = `${guess} is not in the word.`;
+             message.innerText = `Sorry, the word has no ${guess}.`;
              remainingGuesses -=1;
              console.log(remainingGuesses);
             } else {
                 message.innerText = `Good guess! the word has the letter ${guess}.`;
             }
-    //}
+
     if(remainingGuesses === 0) {
-        remainingGuessElement.innerText = "Game over.";
+        message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>.`;
+        remainigGuessSpan.innerText = `${remainingGuesses} guess`;
     } else if (remainingGuesses === 1) {
-        remainingGuessElement.innerText = "You have 1 guess remaining.";
+        remainigGuessSpan.innerText = `${remainingGuesses} guess`;
     } else if (remainingGuesses >1){
-        remainingGuessElement.innerText = `You have ${remainingGuesses} guess remaining.`;
+        remainigGuessSpan.innerText = `${remainingGuesses} guess`;
     };
 }
 
